@@ -1,0 +1,8 @@
+services:
+  numbas_container:
+    build: .
+    container_name: numbas_editor
+    ports:
+      - "8000:8000"
+    environment:
+      - EDITOR_PASSWORD=${EDITOR_PASSWORD}

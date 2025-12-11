@@ -1,13 +1,23 @@
 # Numbas Container 2025
 
+Using docker instead of vm to start-up numbas: https://docs.docker.com/ 
+
 There apparently is already an image built here: https://github.com/numbas/numbas-editor-docker.git 
 https://hub.docker.com/r/numbas/numbas-editor
 
-It was done 6 years ago, so I'll put the entire thing into legacy, and also build 
-following the latest instruction for the container (as the legacy seems to take forever to build for some reason).
+It was done 6 years ago, and many packages have been out-dated and no longer supported. So, following the latest instruction, I build this container.
 
-Supply the editor password as environment variable during runtime:
+## Instruction
 
+1. Install Docker
+2. Supply the editor password in the .env file. Create an .env file at the top level
+following this format:
 ```bash
-docker run -e EDITOR_PASSWORD=$EDITOR_PASSWORD myimage
+EDITOR_PASSWORD=<editor_password>
 ```
+3. Run:
+```bash
+docker compose run --service-ports numbas_container
+```
+for an interactive shell during setup.
+4. Follow the prompts (access the server in )

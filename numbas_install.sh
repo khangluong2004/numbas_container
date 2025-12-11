@@ -1,12 +1,26 @@
-apt install nginx git-core mysql-server \
+#!/bin/bash
+set -e
+
+apt update
+apt install -y nginx git-core mysql-server \
 mysql-common python3 acl libmysqlclient-dev python3-dev \
 supervisor python3-pip python3-virtualenv pkg-config
 
+groupadd numbas
+useradd -m -g numbas -G www-data numbas_user
+
+mkdir /opt/numbas_python
+setfacl -dR -m g:numbas:rwx /opt/numbas_python
+virtualenv -p python3 /opt/numbas_python
+
+source /opt/numbas_python/bin/activate
+
+service mysql start
 mysql <<EOF
 create database numbas_editor;
 EOF
 
-mkdir /srv/numbas{,/compiler,/editor,/media,/previews,/static}
+mkdir -p /srv/numbas/compiler /srv/numbas/editor /srv/numbas/media /srv/numbas/previews /srv/numbas/static
 cd /srv/numbas
 chmod 2770 media previews
 chmod 2750 compiler static
