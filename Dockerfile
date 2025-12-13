@@ -8,4 +8,7 @@ RUN ./numbas_install.sh
 COPY startup.sh ./startup.sh
 RUN chmod +x ./startup.sh
 
+COPY web_setup.sh ./web_setup.sh
+RUN chmod +x ./web_setup.sh
+
 CMD ["bash", "-c", "./startup.sh"]
