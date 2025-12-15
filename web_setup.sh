@@ -2,6 +2,7 @@ echo "Setup supervisor, gunicorn and nginx"
 mkdir /var/log/numbas_editor
 chown www-data:www-data /var/log/numbas_editor
 chown -R www-data:www-data /srv/numbas/editor
+chown -R www-data:www-data /srv/numbas
 
 cat > /srv/numbas/editor/web/gunicorn.conf.py <<EOF
 # Serve on port 8001
@@ -65,6 +66,8 @@ server {
     }
 }
 EOF
+
+chmod -R 777 /srv/numbas
 
 service nginx restart
 service supervisor restart
