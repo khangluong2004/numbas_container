@@ -36,6 +36,10 @@ echo 'Running first setup in background with PID' $FIRST_SETUP_PID
 # Wait for the first setup script to finish
 wait $FIRST_SETUP_PID || echo "First setup is done"
 
+# Allow X-frame from anywhere to avoid cross-origin issues when test locally
+# NOTE: For testing only, not for production
+echo "Updating X-Frame-Options header"
+echo "X_FRAME_OPTIONS = 'ALLOWALL'\n" >> /srv/numbas/editor/numbas/settings.py
 
 # Setup the web server
 /usr/local/app/web_setup.sh
