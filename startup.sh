@@ -15,7 +15,7 @@ until mysqladmin ping &>/dev/null; do
 done
 
 mysql <<EOF
-create user 'numbas_editor'@'localhost' identified by '$EDITOR_PASSWORD';
+create user if not exists 'numbas_editor'@'localhost' identified by '$EDITOR_PASSWORD';
 grant all privileges on numbas_editor.* to 'numbas_editor'@'localhost';
 EOF
 
@@ -36,9 +36,6 @@ echo 'Running first setup in background with PID' $FIRST_SETUP_PID
 # Wait for the first setup script to finish
 wait $FIRST_SETUP_PID || echo "First setup is done"
 
-# Replace the ALLOWED_HOST in settings.py to allow all hosts
-echo 'Setting ALLOWED_HOSTS to allow all hosts to access the editor'
-sed -i "s/ALLOWED_HOSTS = \[.*\]/ALLOWED_HOSTS = \['\*'\]/" /srv/numbas/editor/numbas/settings.py
 
 # Setup the web server
 /usr/local/app/web_setup.sh

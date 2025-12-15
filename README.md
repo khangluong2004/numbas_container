@@ -30,9 +30,12 @@ docker compose up --build
 to build and start the server container.
 
 4. The first setup requires opening a webpage on http://localhost:8000. Go to this page,
+set up the correct access domain (leave it as * to allow any domain),
 select MySQL as the desirable database (as setup following Numbas' instruction), 
 input the database's editor use password as set in step 2, and leave all others as default.
 Click Next and wait until the setup process are finished.
+
+If this is not the first setup (eg: an old docker container is just restarted), skip step 4 and move to step 5.
 
 5. The log will display the process id (pid) of the setup server (as that requires
 a web server for some reason), like this:
