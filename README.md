@@ -19,7 +19,7 @@ usermod -a -G mysql www-data
 chmod 777 -R /var/run/mysqld/
 chmod 777 -R /var/run/mysqld/mysqld.sock
 ```
-2. If running the server and accessing through browser on the same machine, add "X_FRAME_OPTIONS = 'ALLOWALL'" to /srv/numbas/editor/numbas/settings.py. 
+2. If running the server and accessing through browser on the same machine, add "X_FRAME_OPTIONS = 'ALLOWALL'" to /srv/numbas/editor/numbas/settings.py.
 
 ## Files overview
 
@@ -73,7 +73,9 @@ docker compose down -v
 
 ## Full vm instruction
 
-If docker is not used (recommend Docker though), the full_script.sh in full_script_vm can be used. After running the script in Ubuntu with:
+If docker is not used (recommend Docker though), the full_script.sh in full_script_vm can be used.
+Change "EDITOR_PASSWORD="password"" in the script to your editor password.
+After running the script in Ubuntu with:
 ```bash
 sudo ./full_script.sh
 ```
@@ -87,3 +89,7 @@ kill <pid>
 directly to kill the setup process.
 
 2. For step 6, the editor will be available on whatever port that you forward port 80 from your VM to.
+
+## Users
+
+Login with the superuser credential, since I haven't handled the email server needed for new user signup yet.
