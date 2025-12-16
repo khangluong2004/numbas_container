@@ -85,4 +85,5 @@ follow step 4 -6 as above, but:
 kill <pid>
 ```
 directly to kill the setup process.
+
 2. For step 6, the editor will be available on whatever port that you forward port 80 from your VM to.
