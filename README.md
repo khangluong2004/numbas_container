@@ -7,6 +7,20 @@ https://hub.docker.com/r/numbas/numbas-editor
 
 It was done 6 years ago, and many packages have been out-dated and no longer supported. So, following the latest instruction, I build this container.
 
+## Notes on instructions on website
+
+TLDR: The instructions on https://docs.numbas.org.uk/en/latest/server-installation/ubuntu-web.html needs these extra step to work: 
+1. Need to allow permission to write to for the user running the program /var/run/mysqld/mysqld.sock
+```bash
+# Add www-data to the mysql group
+usermod -a -G mysql www-data
+
+# Make sure the socket file has correct permissions
+chmod 777 -R /var/run/mysqld/
+chmod 777 -R /var/run/mysqld/mysqld.sock
+```
+2. If running the server and accessing through browser on the same machine, add "X_FRAME_OPTIONS = 'ALLOWALL'" to /srv/numbas/editor/numbas/settings.py. 
+
 ## Files overview
 
 1. compose.yml: Set up for container startup (with port forwarding, ...)
