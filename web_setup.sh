@@ -67,7 +67,6 @@ server {
 }
 EOF
 
-chmod -R 777 /srv/numbas
 
 service nginx restart
 service supervisor restart

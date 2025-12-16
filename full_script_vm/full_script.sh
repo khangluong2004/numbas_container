@@ -49,20 +49,32 @@ pip install -r /srv/numbas/editor/requirements.txt
 pip install -r /srv/numbas/compiler/requirements.txt
 pip install mysqlclient gunicorn
 
-echo 'Run "first setup" script'
-cd /srv/numbas/editor
-# Run python in background
-python3 first_setup.py &
-FIRST_SETUP_PID=$!
+if [ ! -f /srv/numbas/editor/numbas/settings.py ]; then
+    echo 'Run "first setup" script'
+    cd /srv/numbas/editor
+    # Run python in background
+    python3 first_setup.py &
+    FIRST_SETUP_PID=$!
 
-echo 'Running first setup in background with PID' $FIRST_SETUP_PID
-# Wait for the first setup script to finish
-wait $FIRST_SETUP_PID || echo "First setup is done"
+    echo 'Running first setup in background with PID' $FIRST_SETUP_PID
+    # Wait for the first setup script to finish
+    wait $FIRST_SETUP_PID || echo "First setup is done"
+else
+    echo 'Skipping first setup - settings.py already exists'
+fi
 
 mkdir -p /var/log/numbas_editor
 chown www-data:www-data /var/log/numbas_editor
 chown -R www-data:www-data /srv/numbas
-chmod -R 777 /srv/numbas
+
+echo "Updating X-Frame-Options header"
+echo "Allow X-frame from anywhere to avoid cross-origin issues when test locally"
+echo "NOTE: For testing only, not for production"
+if ! grep -q "X_FRAME_OPTIONS = 'ALLOWALL'" /srv/numbas/editor/numbas/settings.py; then
+    echo "X_FRAME_OPTIONS = 'ALLOWALL'" >> /srv/numbas/editor/numbas/settings.py
+else
+    echo "X_FRAME_OPTIONS already configured, skipping"
+fi
 
 echo "Setup supervisor, gunicorn and nginx"
 cat > /srv/numbas/editor/web/gunicorn.conf.py <<EOF
