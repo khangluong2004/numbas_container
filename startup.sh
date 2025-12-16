@@ -26,20 +26,29 @@ usermod -a -G mysql www-data
 chmod 777 /var/run/mysqld/
 chmod 777 /var/run/mysqld/mysqld.sock
 
-echo 'Run "first setup" script'
-cd /srv/numbas/editor
-# Run python in background
-python3 first_setup.py &
-FIRST_SETUP_PID=$!
+if [ ! -f /srv/numbas/editor/numbas/settings.py ]; then
+    echo 'Run "first setup" script'
+    cd /srv/numbas/editor
+    # Run python in background
+    python3 first_setup.py &
+    FIRST_SETUP_PID=$!
 
-echo 'Running first setup in background with PID' $FIRST_SETUP_PID
-# Wait for the first setup script to finish
-wait $FIRST_SETUP_PID || echo "First setup is done"
+    echo 'Running first setup in background with PID' $FIRST_SETUP_PID
+    # Wait for the first setup script to finish
+    wait $FIRST_SETUP_PID || echo "First setup is done"
+else
+    echo 'Skipping first setup - settings.py already exists'
+fi
 
-# Allow X-frame from anywhere to avoid cross-origin issues when test locally
-# NOTE: For testing only, not for production
+
 echo "Updating X-Frame-Options header"
-echo "X_FRAME_OPTIONS = 'ALLOWALL'" >> /srv/numbas/editor/numbas/settings.py
+echo "Allow X-frame from anywhere to avoid cross-origin issues when test locally"
+echo "NOTE: For testing only, not for production"
+if ! grep -q "X_FRAME_OPTIONS = 'ALLOWALL'" /srv/numbas/editor/numbas/settings.py; then
+    echo "X_FRAME_OPTIONS = 'ALLOWALL'" >> /srv/numbas/editor/numbas/settings.py
+else
+    echo "X_FRAME_OPTIONS already configured, skipping"
+fi
 
 # Setup the web server
 /usr/local/app/web_setup.sh

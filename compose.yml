@@ -5,7 +5,12 @@ services:
     ports:
       - "8000:8000"
       - "8080:80"
-      - "9000:9000"
-      - "8001:8001"
     environment:
       - EDITOR_PASSWORD=${EDITOR_PASSWORD}
+    volumes:
+      - numbas_data:/srv/numbas
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  numbas_data:
+  mysql_data:
