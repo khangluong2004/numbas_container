@@ -14,6 +14,10 @@ Then connect Numbas server to the LMS, and students can then attempt the exam vi
 the LMS. This allows more flexibility than option 1 (eg: educators can change
 the exam without reuploading the SCORM package).
 
+The first method is fully tested, and works fine. The second method is not tested yet,
+because of security reasons (and requirements of servers, domain, etc. for set up), so is
+recommended for actual production only.
+
 ## Numbas Editor
 All details in /numbas_editor README
 
